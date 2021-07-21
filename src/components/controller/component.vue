@@ -1,5 +1,8 @@
 <template>
   <div class="controller"></div>
+  <div class="logo" v-if="!hideLogo">
+    <img src="@/assets/logo.svg">
+  </div>
 </template>
 
 <script>
@@ -17,6 +20,11 @@ let keydownInterval
 
 export default {
   props: ['updateX', 'updateY', 'actionA'],
+  data () {
+    return {
+      hideLogo: false
+    }
+  },
   mounted () {
     const currentKeys = []
     const onceler = {}
@@ -24,6 +32,7 @@ export default {
     this.run(currentKeys)
 
     document.addEventListener('keydown', (event) => {
+      this.hideLogo = this.hideLogo || true
       const keycode = event.which || event.keyCode || 0
       onceler[keycode] = onceler[keycode] ? onceler[keycode] : this.addKey(currentKeys, keycode)
     })
