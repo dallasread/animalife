@@ -3,7 +3,9 @@
     <div class="background" :style="backgroundStyle"></div>
     <div class="foreground" :style="foregroundStyle"></div>
     <p>You are in "{{level.name}}".</p>
-    <p class="position">{{position}}</p>
+    <p class="position">
+      {{position}}
+    </p>
     <Character :character="character" :style="characterStyle" />
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" />
   </div>
@@ -66,16 +68,19 @@ export default {
       this.reverseCharacter = deltaX < 0
     },
 
-    updateY(deltaY) {
-      const newPosition = this.position.y + deltaY
+    updateY() {
+      // const newPosition = this.position.y + deltaY
 
-      if (newPosition <= 0) {
-        this.position.y = newPosition
-      }
+      // if (newPosition <= 0) {
+      //   this.position.y = newPosition
+      // }
     },
 
     actionA() {
-      console.log('jump!')
+      this.position.y += 1
+      setTimeout(() => this.position.y += 1, 50)
+      setTimeout(() => this.position.y -= 1, 100)
+      setTimeout(() => this.position.y -= 1, 150)
     }
   }
 }
