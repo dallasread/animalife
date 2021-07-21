@@ -1,13 +1,15 @@
 <template>
   <div class="level">
+    <div v-if="!isInitialized">
+      <div class="logo">
+        <img src="@/assets/logo.svg">
+      </div>
+      <p class="name">Welcome to {{level.name}}!</p>
+    </div>
     <div class="background" :style="backgroundStyle"></div>
     <div class="foreground" :style="foregroundStyle"></div>
-    <p>You are in "{{level.name}}".</p>
-    <p class="position">
-      {{position}}
-    </p>
     <Character :character="character" :style="characterStyle" />
-    <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" />
+    <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
 </template>
 
@@ -29,7 +31,8 @@ export default {
         x: 2,
         y: 0
       },
-      reverseCharacter: false
+      reverseCharacter: false,
+      isInitialized: false
     }
   },
   computed: {
@@ -81,6 +84,10 @@ export default {
       setTimeout(() => this.position.y = 2, 50)
       setTimeout(() => this.position.y = 1, 100)
       setTimeout(() => this.position.y = 0, 150)
+    },
+
+    controllerInitialized() {
+      this.isInitialized = true
     }
   }
 }
