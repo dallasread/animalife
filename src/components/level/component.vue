@@ -15,7 +15,7 @@
 import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
 
-const PIXEL_SIZE = 20
+const PIXEL_SIZE = 14
 
 export default {
   props: ['character', 'level'],
