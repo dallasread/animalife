@@ -1,4 +1,4 @@
-$pixel_width: 15px;
+$pixel_width: 20px;
 
 .level {
   position: fixed;
@@ -13,7 +13,7 @@ $pixel_width: 15px;
   background-position: bottom;
   top: 0;
   right: 0;
-  bottom: $pixel_width * 10;
+  bottom: $pixel_width * 7;
   left: 0;
 }
 
@@ -22,16 +22,18 @@ $pixel_width: 15px;
   right: 0;
   bottom: 0;
   left: 0;
-  height: $pixel_width * 10;
+  height: $pixel_width * 7;
 }
 
 .character {
   display: inline-block;
   position: absolute;
-  bottom: ($pixel_width * 10) - ($pixel_width * 1);
+  bottom: ($pixel_width * 7) - ($pixel_width * 1);
 
   img {
-    margin-bottom: -4px;
+    margin-bottom: $pixel_width / -8.5;
+    margin-right: $pixel_width / -10;
+    display: block;
   }
 }
 

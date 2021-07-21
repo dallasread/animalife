@@ -13,7 +13,7 @@
 import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
 
-const PIXEL_SIZE = 15
+const PIXEL_SIZE = 20
 
 export default {
   props: ['character', 'level'],
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       position: {
-        x: 0,
+        x: 2,
         y: 0
       },
       reverseCharacter: false
