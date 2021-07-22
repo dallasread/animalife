@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <select>
-
+    <select v-model="character" class="character-chooser">
+      <option v-for="c in characters" :key="c.name" :value="c">{{c.name}}</option>
     </select>
     <Level
       :level="level"
