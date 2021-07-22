@@ -41,7 +41,7 @@ export default {
 
       // style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
       style += `margin-left: calc(50% - ${((this.character.width * PIXEL_SIZE) / 2) + (5 * PIXEL_SIZE)}px);`
-      style += `margin-bottom: ${this.position.y * (2 * PIXEL_SIZE)}px;`
+      style += `bottom: calc(50% - ${PIXEL_SIZE * (7 - this.character.yOffset)}px);`
 
       if (this.reverseCharacter) {
         style += 'transform: scaleX(-1);'

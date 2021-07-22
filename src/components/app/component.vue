@@ -8,8 +8,8 @@
 </template>
 
 <script>
+import CHARACTERS from '@/components/app/characters.js'
 import Level from '@/components/level/component.vue'
-import Doggie from '@/assets/characters/doggie.svg'
 import Grass from '@/assets/levels/gardens/grass.svg'
 import Sky from '@/assets/levels/gardens/sky.svg'
 
@@ -30,11 +30,8 @@ export default {
           width: 1
         }
       },
-      character: {
-        name: 'Doggie',
-        image: Doggie,
-        width: 20
-      }
+      characters: CHARACTERS,
+      character: CHARACTERS[1]
     }
   }
 }

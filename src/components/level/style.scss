@@ -40,11 +40,9 @@ $pixel_width: 14px;
 .character {
   display: inline-block;
   position: absolute;
-  bottom: calc(50% - #{$pixel_width * 8});
+  margin-bottom: -$pixel_width / 6;
 
   img {
-    margin-bottom: $pixel_width / -8.5;
-    margin-right: $pixel_width / -10;
     display: block;
   }
 }
