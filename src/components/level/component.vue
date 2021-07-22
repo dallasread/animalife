@@ -80,9 +80,9 @@ export default {
     },
 
     actionA() {
-      this.position.y = 1
-      setTimeout(() => this.position.y = 2, 50)
-      setTimeout(() => this.position.y = 1, 100)
+      this.position.y = 2
+      setTimeout(() => this.position.y = 4, 50)
+      setTimeout(() => this.position.y = 2, 100)
       setTimeout(() => this.position.y = 0, 150)
     },
 
