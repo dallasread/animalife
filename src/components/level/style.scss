@@ -22,7 +22,6 @@ $pixel_width: 14px;
 
 .background {
   position: fixed;
-  background-position: bottom;
   background-repeat: repeat-x;
   top: 0;
   right: 0;
@@ -42,6 +41,7 @@ $pixel_width: 14px;
   display: inline-block;
   position: absolute;
   bottom: calc(50% - #{$pixel_width * 8});
+  margin-left: 35%;
 
   img {
     margin-bottom: $pixel_width / -8.5;

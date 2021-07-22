@@ -39,7 +39,8 @@ export default {
     characterStyle() {
       let style = `width: ${this.character.width * PIXEL_SIZE}px;`
 
-      style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
+      // style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
+      // style += `margin-left: ${10 * PIXEL_SIZE}px;`
       style += `margin-bottom: ${this.position.y * (2 * PIXEL_SIZE)}px;`
 
       if (this.reverseCharacter) {
@@ -53,6 +54,7 @@ export default {
       let style = `background-image: url(${this.level.background.image});`
 
       style += `background-size: ${this.level.background.width * PIXEL_SIZE}px;`
+      style += `background-position: bottom;`
 
       return style;
     },
@@ -61,6 +63,7 @@ export default {
       let style = `background-image: url(${this.level.foreground.image});`
 
       style += `background-size: ${this.level.foreground.width * PIXEL_SIZE}px;`
+      style += `background-position: ${this.position.x * (3 * PIXEL_SIZE)}px top;`
 
       return style;
     }
