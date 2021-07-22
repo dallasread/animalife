@@ -41,7 +41,7 @@ export default {
 
       // style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
       style += `margin-left: calc(50% - ${((this.character.width * PIXEL_SIZE) / 2) + (5 * PIXEL_SIZE)}px);`
-      style += `bottom: calc(50% - ${PIXEL_SIZE * (7 - this.character.yOffset)}px);`
+      style += `bottom: calc(50% - ${PIXEL_SIZE * (7 - this.character.yOffset - this.position.y)}px);`
 
       if (this.reverseCharacter) {
         style += 'transform: scaleX(-1);'
@@ -83,10 +83,10 @@ export default {
     },
 
     actionA() {
-      this.position.y = 2
-      setTimeout(() => this.position.y = 4, 50)
-      setTimeout(() => this.position.y = 2, 100)
-      setTimeout(() => this.position.y = 0, 150)
+      this.position.y += 2
+      setTimeout(() => this.position.y += 2, 50)
+      setTimeout(() => this.position.y -= 2, 100)
+      setTimeout(() => this.position.y -= 2, 150)
     },
 
     controllerInitialized() {

@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <select>
+
+    </select>
     <Level
       :level="level"
       :character="character"
@@ -31,7 +34,7 @@ export default {
         }
       },
       characters: CHARACTERS,
-      character: CHARACTERS[1]
+      character: CHARACTERS[3]
     }
   }
 }
