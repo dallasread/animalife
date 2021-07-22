@@ -41,7 +41,6 @@ $pixel_width: 14px;
   display: inline-block;
   position: absolute;
   bottom: calc(50% - #{$pixel_width * 8});
-  margin-left: 35%;
 
   img {
     margin-bottom: $pixel_width / -8.5;

@@ -40,7 +40,7 @@ export default {
       let style = `width: ${this.character.width * PIXEL_SIZE}px;`
 
       // style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
-      // style += `margin-left: ${10 * PIXEL_SIZE}px;`
+      style += `margin-left: calc(50% - ${((this.character.width * PIXEL_SIZE) / 2) + (5 * PIXEL_SIZE)}px);`
       style += `margin-bottom: ${this.position.y * (2 * PIXEL_SIZE)}px;`
 
       if (this.reverseCharacter) {
