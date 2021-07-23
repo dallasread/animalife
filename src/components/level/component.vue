@@ -1,6 +1,9 @@
 <template>
   <div class="level">
-    <div v-if="!isInitialized">
+    <a v-if="isInitialized" href="javascript:;" @click="reset" class="reset">
+      &laquo;
+    </a>
+    <div v-else>
       <div class="logo">
         <img src="@/assets/logo.svg">
       </div>
@@ -21,7 +24,7 @@ import Character from '@/components/character/component.vue'
 const PIXEL_SIZE = 14
 
 export default {
-  props: ['character', 'level'],
+  props: ['character', 'level', 'reset'],
   components: {
     Controller,
     Character

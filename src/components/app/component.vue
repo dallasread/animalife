@@ -4,6 +4,7 @@
       v-if="character"
       :level="level"
       :character="character"
+      :reset="reset"
     />
     <ul v-else class="characters">
       <li v-for="c in characters" :key="c.name">
@@ -40,7 +41,12 @@ export default {
         }
       },
       characters: CHARACTERS,
-      character: null
+      character: CHARACTERS[1]
+    }
+  },
+  methods: {
+    reset () {
+      this.character = null
     }
   }
 }
