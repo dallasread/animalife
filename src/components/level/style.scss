@@ -78,8 +78,8 @@ $pixel_width: 14px;
 .collectable {
   position: absolute;
   background: red;
-  top: 0;
-  right: 0;
+  bottom: calc(50% - #{$pixel_width * 7});
+  left: 0;
   width: $pixel_width;
   height: $pixel_width;
   z-index: 9999;
