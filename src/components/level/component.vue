@@ -14,7 +14,7 @@
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
       <Character :character="character" :style="characterStyle" />
-      <div v-for="collectable in collectables" :key="collectable.id" class="collectable">
+      <div v-for="collectable in collectables" :key="collectable.id" class="collectable" :style="collectableStyle(collectable)">
         {{collectable.name}}
       </div>
     </Camera>
@@ -56,7 +56,6 @@ export default {
       let style = `width: ${this.character.width * PIXEL_SIZE}px;`
 
       style += `margin-left: ${this.characterPosition.x * PIXEL_SIZE}px;`
-      // style += `margin-left: calc(50% + ${this.characterPosition.x * (this.character.speed * PIXEL_SIZE)}px;`
       style += `margin-bottom: ${PIXEL_SIZE * (this.character.yOffset + this.characterPosition.y)}px;`
 
       if (this.reverseCharacter) {
@@ -86,15 +85,14 @@ export default {
   },
   methods: {
     updateX(deltaX) {
-      const newCharacterPosition = this.characterPosition.x += deltaX * this.character.speed
-      const collision = this.collide(newCharacterPosition)
-      console.log(collision)
+      const newCharacterPosition = this.characterPosition.x + (deltaX * this.character.speed)
+      const collision = this.collide({ x: newCharacterPosition, y: this.characterPosition.y })
 
       this.reverseCharacter = deltaX < 0
 
       if (collision === false) return
 
-      this.characterPosition.x += newCharacterPosition
+      this.characterPosition.x = newCharacterPosition
 
       if (typeof collision === 'function') {
         collision()
@@ -116,7 +114,11 @@ export default {
       setTimeout(() => this.characterPosition.y -= 2, 150)
       setTimeout(() => this.characterPosition.y -= 2, 180)
       setTimeout(() => this.characterPosition.y -= 2, 210)
+    },
+
+    collect(collectable) {
       this.collectableCount += 1
+      collectable.hide = true
     },
 
     controllerInitialized() {
@@ -135,8 +137,33 @@ export default {
       })
     },
 
-    collide() {
-      return false
+    collectableStyle(collectable) {
+      let style = ''
+
+      if (collectable.hide) {
+        style += 'display: none;'
+      } else {
+        style += `margin-left: ${PIXEL_SIZE * collectable.coordinates[0]}px; margin-bottom: ${PIXEL_SIZE * collectable.coordinates[1]}px;`
+      }
+
+      return style
+    },
+
+    collide(newCharacterPosition) {
+      const collectable = this.getCollectable(newCharacterPosition)
+
+      if (collectable) {
+        this.collect(collectable)
+      }
+    },
+
+    getCollectable(position) {
+      const characterStart = position.x - (this.character.width / 2)
+      const characterFinish = position.x + (this.character.width / 2)
+
+      return this.collectables.filter((collectable) => !collectable.hide).find((collectable) => {
+        return collectable.coordinates[0] > characterStart && collectable.coordinates[0] <= characterFinish
+      })
     }
   }
 }

@@ -36,7 +36,12 @@ export default {
           width: 5
         },
         collectables: [
-          [15, 0]
+          [25, 0],
+          [75, 0],
+          [111, 0],
+          [160, 0],
+          [200, 0],
+          [260, 0]
         ],
         background: {
           image: Sky,
