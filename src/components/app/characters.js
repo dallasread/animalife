@@ -6,22 +6,24 @@ import Turtley from '@/assets/characters/turtley.svg'
 class Collectable {
   constructor(coordinates) {
     this.id = Math.random()
-    this.name = this.constructor.name
     this.coordinates = coordinates
   }
 }
 
 class Bone extends Collectable {}
 Bone.plural = 'Bones'
+Bone.singular = 'Bone'
 
 class Fish extends Collectable {}
 Fish.plural = 'Fish'
+Fish.singular = 'Fish'
 
 class Seaweed extends Collectable {}
 Seaweed.plural = 'Seaweed'
+Seaweed.singular = 'Seaweed'
 
 export default [{
-    name: 'Chihuahua',
+    name: 'Chihui',
     image: Chihuahua,
     width: 10,
     yOffset: -1,

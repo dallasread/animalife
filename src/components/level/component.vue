@@ -9,7 +9,7 @@
       </div>
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
-    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.name, this.character.collectable.plural)}}</p>
+    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.plural)}}</p>
     <div class="background" :style="backgroundStyle"></div>
     <div class="foreground" :style="foregroundStyle"></div>
     <Character :character="character" :style="characterStyle" />
