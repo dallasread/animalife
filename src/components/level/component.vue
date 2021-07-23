@@ -10,31 +10,35 @@
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
     <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.plural)}}</p>
-    <div class="background" :style="backgroundStyle"></div>
-    <div class="foreground" :style="foregroundStyle"></div>
-    <Character :character="character" :style="characterStyle" />
+    <Camera :characterPosition="characterPosition">
+      <div class="background" :style="backgroundStyle"></div>
+      <div class="foreground" :style="foregroundStyle"></div>
+      <Character :character="character" :style="characterStyle" />
+      <div v-for="collectable in collectables" :key="collectable.id" class="collectable">
+        {{collectable.name}}
+      </div>
+    </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
-    <div v-for="collectable in collectables" :key="collectable.id" class="collectable">
-      {{collectable.name}}
-    </div>
   </div>
 </template>
 
 <script>
 import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
+import Camera from '@/components/camera/component.vue'
 
 const PIXEL_SIZE = 14
 
 export default {
   props: ['character', 'level', 'reset'],
   components: {
-    Controller,
-    Character
+    Camera,
+    Character,
+    Controller
   },
   data () {
     return {
-      position: {
+      characterPosition: {
         x: 2,
         y: 0
       },
@@ -51,9 +55,9 @@ export default {
     characterStyle() {
       let style = `width: ${this.character.width * PIXEL_SIZE}px;`
 
-      // style += `margin-left: ${this.position.x * (3 * PIXEL_SIZE)}px;`
-      style += `margin-left: calc(50% - ${((this.character.width * PIXEL_SIZE) / 2) + (5 * PIXEL_SIZE)}px);`
-      style += `bottom: calc(50% - ${PIXEL_SIZE * (7 - this.character.yOffset - this.position.y)}px);`
+      style += `margin-left: ${this.characterPosition.x * PIXEL_SIZE}px;`
+      // style += `margin-left: calc(50% + ${this.characterPosition.x * (this.character.speed * PIXEL_SIZE)}px;`
+      style += `margin-bottom: ${PIXEL_SIZE * (this.character.yOffset + this.characterPosition.y)}px;`
 
       if (this.reverseCharacter) {
         style += 'transform: scaleX(-1);'
@@ -75,30 +79,32 @@ export default {
       let style = `background-image: url(${this.level.foreground.image});`
 
       style += `background-size: ${this.level.foreground.width * PIXEL_SIZE}px;`
-      style += `background-position: ${this.position.x * (3 * PIXEL_SIZE)}px top;`
+      style += `background-position: top;`
 
       return style;
     }
   },
   methods: {
     updateX(deltaX) {
-      this.position.x += deltaX
+      this.characterPosition.x += deltaX * this.character.speed
       this.reverseCharacter = deltaX < 0
     },
 
     updateY() {
-      // const newPosition = this.position.y + deltaY
+      // const newPosition = this.characterPosition.y + deltaY
 
       // if (newPosition <= 0) {
-      //   this.position.y = newPosition
+      //   this.characterPosition.y = newPosition
       // }
     },
 
     actionA() {
-      this.position.y += 2
-      setTimeout(() => this.position.y += 2, 50)
-      setTimeout(() => this.position.y -= 2, 100)
-      setTimeout(() => this.position.y -= 2, 150)
+      this.characterPosition.y += 2
+      setTimeout(() => this.characterPosition.y += 2, 30)
+      setTimeout(() => this.characterPosition.y += 2, 60)
+      setTimeout(() => this.characterPosition.y -= 2, 150)
+      setTimeout(() => this.characterPosition.y -= 2, 180)
+      setTimeout(() => this.characterPosition.y -= 2, 210)
       this.collectableCount += 1
     },
 
@@ -116,8 +122,6 @@ export default {
           new this.character.collectable(coordinates)
         )
       })
-
-      console.log(this.collectables)
     }
   }
 }

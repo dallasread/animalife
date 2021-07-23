@@ -27,23 +27,27 @@ export default [{
     image: Chihuahua,
     width: 10,
     yOffset: -1,
-    collectable: Bone
+    collectable: Bone,
+    speed: 3
   }, {
     name: 'Doggie',
     image: Doggie,
     width: 20,
     yOffset: -1,
-    collectable: Bone
+    collectable: Bone,
+    speed: 2
   }, {
     name: 'Kitty',
     image: Kitty,
     width: 17,
     yOffset: -1,
-    collectable: Fish
+    collectable: Fish,
+    speed: 2
   }, {
     name: 'Turtley',
     image: Turtley,
     width: 6,
     yOffset: 0,
-    collectable: Seaweed
+    collectable: Seaweed,
+    speed: 1
 }]
