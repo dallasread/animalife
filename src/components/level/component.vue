@@ -10,7 +10,7 @@
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
     <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.plural)}}</p>
-    <Camera :characterPosition="characterPosition">
+    <Camera :characterPosition="characterPosition" :character="character">
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
       <Character :character="character" :style="characterStyle" />
@@ -86,8 +86,19 @@ export default {
   },
   methods: {
     updateX(deltaX) {
-      this.characterPosition.x += deltaX * this.character.speed
+      const newCharacterPosition = this.characterPosition.x += deltaX * this.character.speed
+      const collision = this.collide(newCharacterPosition)
+      console.log(collision)
+
       this.reverseCharacter = deltaX < 0
+
+      if (collision === false) return
+
+      this.characterPosition.x += newCharacterPosition
+
+      if (typeof collision === 'function') {
+        collision()
+      }
     },
 
     updateY() {
@@ -122,6 +133,10 @@ export default {
           new this.character.collectable(coordinates)
         )
       })
+    },
+
+    collide() {
+      return false
     }
   }
 }

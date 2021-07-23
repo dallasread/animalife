@@ -7,15 +7,17 @@
 </template>
 
 <script>
-const PIXEL_SIZE = 1
+const PIXEL_SIZE = 14
 
 export default {
-  props: ['characterPosition'],
+  props: ['characterPosition', 'character'],
   computed: {
     cameraStyle() {
+      const characterOffset = this.character.width / 2 * PIXEL_SIZE
+      const characterPositionOffset = PIXEL_SIZE * this.characterPosition.x
       let style = ''
 
-      style += `margin-left: ${PIXEL_SIZE * - 14 * this.characterPosition.x}px;`
+      style += `margin-left: calc(50% - ${characterOffset + characterPositionOffset}px);`
 
       return style
     }

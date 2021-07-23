@@ -33,7 +33,7 @@ $pixel_width: 14px;
   .character {
     position: absolute;
     bottom: calc(50% - #{$pixel_width * 7.22});
-    left: calc(50% + #{$pixel_width * 15.6});
+    left: 50%;
 
     img {
       display: block;
@@ -44,7 +44,7 @@ $pixel_width: 14px;
     position: absolute;
     background: red;
     bottom: calc(50% - #{$pixel_width * 7});
-    left: calc(50% + #{$pixel_width * 15.6});
+    left: 50%;
     width: $pixel_width;
     height: $pixel_width;
     z-index: 9999;
