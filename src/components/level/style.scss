@@ -13,7 +13,17 @@ $pixel_width: 14px;
     position: fixed;
     bottom: $pixel_width * 3;
     right: $pixel_width * 3;
-    font-family: Pixeboy, Courier;
+    font-size: 2.5rem;
+    padding: $pixel_width;
+    z-index: 999;
+  }
+
+  .collectable-count {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    bottom: $pixel_width * 3;
+    left: $pixel_width * 3;
     font-size: 2.5rem;
     padding: $pixel_width;
     z-index: 999;

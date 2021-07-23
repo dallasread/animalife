@@ -6,6 +6,7 @@
       </div>
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
+    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.name)}}</p>
     <div class="background" :style="backgroundStyle"></div>
     <div class="foreground" :style="foregroundStyle"></div>
     <Character :character="character" :style="characterStyle" />
@@ -32,7 +33,8 @@ export default {
         y: 0
       },
       reverseCharacter: false,
-      isInitialized: false
+      isInitialized: false,
+      collectableCount: 0
     }
   },
   computed: {
@@ -87,10 +89,15 @@ export default {
       setTimeout(() => this.position.y += 2, 50)
       setTimeout(() => this.position.y -= 2, 100)
       setTimeout(() => this.position.y -= 2, 150)
+      this.collectableCount += 1
     },
 
     controllerInitialized() {
       this.isInitialized = true
+    },
+
+    pluralize (count, singular, plural) {
+      return `${count} ${count === 1 ? singular : plural}`
     }
   }
 }

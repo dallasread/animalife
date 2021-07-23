@@ -1,5 +1,9 @@
 @import "style/reset.css";
 
+html {
+  font-family: Pixeboy, Courier;
+}
+
 .logo {
   position: fixed;
   top: 0;
@@ -16,9 +20,38 @@
   }
 }
 
-.character-chooser {
+.characters {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 99999999;
+  bottom: 0;
+  left: 0;
+  padding: 5%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  li {
+    display: flex;
+    margin: 1%;
+
+    a {
+      border: 5px solid #ddd;
+      display: block;
+      padding: 2rem;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+
+      img {
+        width: 100%;
+      }
+
+      p {
+        font-size: 2.5rem;
+        margin-top: 1rem;
+      }
+    }
+  }
 }

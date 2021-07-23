@@ -1,12 +1,18 @@
 <template>
   <div class="app">
-    <select v-model="character" class="character-chooser">
-      <option v-for="c in characters" :key="c.name" :value="c">{{c.name}}</option>
-    </select>
     <Level
+      v-if="character"
       :level="level"
       :character="character"
     />
+    <ul v-else class="characters">
+      <li v-for="c in characters" :key="c.name">
+        <a href="javascript:;" @click.prevent="character = c">
+          <img :src="c.image"/>
+          <p>{{c.name}}</p>
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -34,7 +40,7 @@ export default {
         }
       },
       characters: CHARACTERS,
-      character: CHARACTERS[3]
+      character: null
     }
   }
 }
