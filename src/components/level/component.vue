@@ -9,11 +9,14 @@
       </div>
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
-    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.name)}}</p>
+    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.name, this.character.collectable.plural)}}</p>
     <div class="background" :style="backgroundStyle"></div>
     <div class="foreground" :style="foregroundStyle"></div>
     <Character :character="character" :style="characterStyle" />
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
+    <div v-for="collectable in collectables" :key="collectable.id" class="collectable">
+      {{collectable.name}}
+    </div>
   </div>
 </template>
 
@@ -37,8 +40,12 @@ export default {
       },
       reverseCharacter: false,
       isInitialized: false,
-      collectableCount: 0
+      collectableCount: 0,
+      collectables: []
     }
+  },
+  mounted() {
+    this.addCollectables()
   },
   computed: {
     characterStyle() {
@@ -101,6 +108,16 @@ export default {
 
     pluralize (count, singular, plural) {
       return `${count} ${count === 1 ? singular : plural}`
+    },
+
+    addCollectables () {
+      this.level.collectables.forEach((coordinates) => {
+        this.collectables.push(
+          new this.character.collectable(coordinates)
+        )
+      })
+
+      console.log(this.collectables)
     }
   }
 }

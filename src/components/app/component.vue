@@ -35,6 +35,9 @@ export default {
           image: Grass,
           width: 5
         },
+        collectables: [
+          [0, 0]
+        ],
         background: {
           image: Sky,
           width: 1

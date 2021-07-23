@@ -74,3 +74,13 @@ $pixel_width: 14px;
   top: 0;
   right: 0;
 }
+
+.collectable {
+  position: absolute;
+  background: red;
+  top: 0;
+  right: 0;
+  width: $pixel_width;
+  height: $pixel_width;
+  z-index: 9999;
+}
