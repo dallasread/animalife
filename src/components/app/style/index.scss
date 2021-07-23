@@ -1,5 +1,10 @@
 @import "style/reset.css";
 
+@font-face {
+  font-family: "Pixeboy";
+  src: local("Pixeboy"), url(../../assets/fonts/Pixeboy.ttf) format("truetype");
+}
+
 html {
   font-family: Pixeboy, Courier;
 }
