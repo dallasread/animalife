@@ -44,7 +44,7 @@ export default {
         }
       },
       characters: CHARACTERS,
-      character: CHARACTERS[1]
+      character: null
     }
   },
   methods: {
