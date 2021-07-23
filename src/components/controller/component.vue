@@ -13,9 +13,6 @@ const LEFT = 37
 const RIGHT = 39
 const SPACE = 32
 
-let keydownInterval
-let isInitialized = false
-
 export default {
   props: ['updateX', 'updateY', 'actionA', 'initialized'],
   mounted () {
@@ -25,9 +22,9 @@ export default {
     this.run(currentKeys)
 
     document.addEventListener('keydown', (event) => {
-      isInitialized = isInitialized ? isInitialized : this.initialized() || true
+      this.isInitialized = this.isInitialized ? this.isInitialized : this.initialized() || true
       const keycode = event.which || event.keyCode || 0
-      onceler[keycode] = onceler[keycode] ? onceler[keycode] : this.addKey(currentKeys, keycode)
+      onceler[keycode] = onceler[keycode] ? onceler[keycode] : this.addKey(currentKeys, keycode) || 1
     })
 
     document.addEventListener('keyup', (event) => {
@@ -36,13 +33,17 @@ export default {
       delete onceler[keycode]
     })
   },
+  data() {
+    return {
+      isInitialized: false,
+      keydownInterval: undefined
+    }
+  },
   methods: {
     addKey(currentKeys, keycode) {
       if (currentKeys.indexOf(keycode) === -1) {
         currentKeys.push(keycode)
       }
-
-      return 1
     },
 
     removeKey(currentKeys, keycode) {
@@ -52,7 +53,7 @@ export default {
     },
 
     run(currentKeys) {
-      keydownInterval = setInterval(() => {
+      this.keydownInterval = setInterval(() => {
         if (isKeyActive(currentKeys, UP)) {
           this.updateY(+1)
         } else if (isKeyActive(currentKeys, DOWN)) {
@@ -73,7 +74,7 @@ export default {
     },
 
     stop() {
-      clearInterval(keydownInterval)
+      clearInterval(this.keydownInterval)
     }
   }
 }
