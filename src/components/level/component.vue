@@ -162,7 +162,11 @@ export default {
       const characterFinish = position.x + (this.character.width / 2)
 
       return this.collectables.filter((collectable) => !collectable.hide).find((collectable) => {
-        return collectable.coordinates[0] > characterStart && collectable.coordinates[0] <= characterFinish
+        const collectableX = collectable.coordinates[0]
+        const collectableY = collectable.coordinates[1]
+        return collectableX > characterStart + 4
+          && collectableX <= characterFinish + 3
+          && collectableY === position.y
       })
     }
   }

@@ -36,6 +36,7 @@ export default {
           width: 5
         },
         collectables: [
+          [-25, 0],
           [25, 0],
           [75, 0],
           [111, 0],
