@@ -4,7 +4,7 @@
       &laquo;
     </a>
     <div v-else>
-      <div class="logo">
+      <div class="logo" @click="controllerInitialized">
         <img src="@/assets/logo.svg">
       </div>
       <p class="name">Welcome to {{level.name}}!</p>

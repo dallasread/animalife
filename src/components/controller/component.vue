@@ -1,5 +1,9 @@
 <template>
-  <div class="controller"></div>
+  <div class="controller">
+    <div class="d-pad" ref="dpad" v-touch:press="touchPress" v-touch:release="touchRelease" v-touch:drag="touchDrag" v-touch:hold="touchDrag">
+      <div class="circle" v-if="dPadCenter" :style="dPadCircleStyle"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -7,6 +11,7 @@ const isKeyActive = (keys, key) => {
   return keys.indexOf(key) !== -1
 }
 
+const PIXEL_SIZE = 14
 const UP = 38
 const DOWN = 40
 const LEFT = 37
@@ -36,7 +41,15 @@ export default {
   data() {
     return {
       isInitialized: false,
-      keydownInterval: undefined
+      keydownInterval: undefined,
+      dPadCenter: null
+    }
+  },
+  computed: {
+    dPadCircleStyle () {
+      const left = Math.max(this.dPadCenter.x - (PIXEL_SIZE * 5), 5)
+      const bottom = Math.max(window.outerHeight - this.dPadCenter.y - (PIXEL_SIZE * 5), 5)
+      return `left: ${left}px; bottom: ${bottom}px;`
     }
   },
   methods: {
@@ -75,11 +88,38 @@ export default {
 
     stop() {
       clearInterval(this.keydownInterval)
+    },
+
+    touchPress(event) {
+      if (!event.touches) {
+        return
+      }
+
+      this.dPadCenter = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      }
+    },
+
+    touchRelease() {
+      this.dPadCenter = null
+    },
+
+    touchDrag(event) {
+      if (!event.touches) {
+        return
+      }
+
+      if (event.touches[0].clientX < this.dPadCenter.x) {
+        this.updateX(-1)
+      } else if (event.touches[0].clientX > this.dPadCenter.x) {
+        this.updateX(+1)
+      }
     }
   }
 }
 </script>
 
-<style>
+<style lang="sass">
 @import "style.scss"
 </style>

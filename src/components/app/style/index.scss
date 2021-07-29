@@ -5,8 +5,9 @@
   src: local("Pixeboy"), url("../../assets/fonts/Pixeboy.ttf") format("truetype");
 }
 
-html {
+html, body {
   font-family: Pixeboy, Courier;
+  overflow: hidden;
 }
 
 .logo {
