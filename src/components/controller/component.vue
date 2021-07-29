@@ -1,6 +1,6 @@
 <template>
   <div class="controller">
-    <div class="d-pad" ref="dpad" v-touch:press="touchPress" v-touch:release="touchRelease" v-touch:drag="touchDrag" v-touch:hold="touchDrag">
+    <div class="d-pad" ref="dpad">
       <div class="circle" v-if="dPadCenter" :style="dPadCircleStyle"></div>
     </div>
   </div>
@@ -36,6 +36,36 @@ export default {
       const keycode = event.which || event.keyCode || 0
       this.removeKey(currentKeys, keycode)
       delete onceler[keycode]
+    })
+
+    this.$refs.dpad.addEventListener('touchstart', (event) => {
+      if (!event.touches) {
+        return
+      }
+
+      this.dPadCenter = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      }
+    })
+
+    this.$refs.dpad.addEventListener('touchend', () => {
+      this.dPadCenter = null
+      currentKeys.splice(0, currentKeys.length)
+    })
+
+    this.$refs.dpad.addEventListener('touchmove', (event) => {
+      if (!event.touches) {
+        return
+      }
+
+      currentKeys.splice(0, currentKeys.length)
+
+      if (event.touches[0].clientX < this.dPadCenter.x) {
+        this.addKey(currentKeys, LEFT)
+      } else if (event.touches[0].clientX > this.dPadCenter.x) {
+        this.addKey(currentKeys, RIGHT)
+      }
     })
   },
   data() {
@@ -88,33 +118,6 @@ export default {
 
     stop() {
       clearInterval(this.keydownInterval)
-    },
-
-    touchPress(event) {
-      if (!event.touches) {
-        return
-      }
-
-      this.dPadCenter = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-      }
-    },
-
-    touchRelease() {
-      this.dPadCenter = null
-    },
-
-    touchDrag(event) {
-      if (!event.touches) {
-        return
-      }
-
-      if (event.touches[0].clientX < this.dPadCenter.x) {
-        this.updateX(-1)
-      } else if (event.touches[0].clientX > this.dPadCenter.x) {
-        this.updateX(+1)
-      }
     }
   }
 }
