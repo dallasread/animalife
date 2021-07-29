@@ -3,6 +3,7 @@
     <div class="d-pad" ref="dpad">
       <div class="circle" v-if="dPadCenter" :style="dPadCircleStyle"></div>
     </div>
+    <div class="button-a" @click="actionA"></div>
   </div>
 </template>
 
