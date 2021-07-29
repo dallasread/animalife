@@ -164,8 +164,8 @@ export default {
       return this.collectables.filter((collectable) => !collectable.hide).find((collectable) => {
         const collectableX = collectable.coordinates[0]
         const collectableY = collectable.coordinates[1]
-        return collectableX > characterStart + 4
-          && collectableX <= characterFinish + 3
+        return collectableX > characterStart + (this.character.width / 2)
+          && collectableX <= characterFinish + (this.character.width / 2)
           && collectableY === position.y
       })
     }
