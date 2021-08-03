@@ -3,12 +3,13 @@ import Doggie from '@/assets/characters/doggie.svg'
 import Kitty from '@/assets/characters/kitty.svg'
 import Turtley from '@/assets/characters/turtley.svg'
 import BoneImage from '@/assets/collectables/bone.svg'
+import SeaweedImage from '@/assets/collectables/seaweed.svg'
+import FishImage from '@/assets/collectables/fish.svg'
 
 class Collectable {
   constructor(coordinates) {
     this.id = Math.random()
     this.coordinates = coordinates
-    console.log(this)
   }
 }
 
@@ -21,14 +22,14 @@ Bone.width = 5
 class Fish extends Collectable {}
 Fish.plural = 'Fish'
 Fish.singular = 'Fish'
-Fish.image = BoneImage
+Fish.image = FishImage
 Fish.width = 5
 
 class Seaweed extends Collectable {}
 Seaweed.plural = 'Seaweed'
 Seaweed.singular = 'Seaweed'
-Seaweed.image = BoneImage
-Seaweed.width = 5
+Seaweed.image = SeaweedImage
+Seaweed.width = 3
 
 export default [{
     name: 'Chihui',

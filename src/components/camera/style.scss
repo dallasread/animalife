@@ -42,7 +42,7 @@ $pixel_width: 10px;
 
   .collectable {
     position: absolute;
-    bottom: calc(50% - #{$pixel_width * 7.5});
+    bottom: calc(50% - #{$pixel_width * 7.6});
     left: calc(50% + #{$pixel_width * 0.6});
     z-index: 9999;
 
