@@ -3,7 +3,7 @@
     <div class="d-pad" ref="dpad">
       <div class="circle" v-if="dPadCenter" :style="dPadCircleStyle"></div>
     </div>
-    <a class="button-a" @click.prevent="actionA"></a>
+    <a class="button-a" ref="buttonA"></a>
   </div>
 </template>
 
@@ -67,6 +67,10 @@ export default {
       } else if (event.touches[0].clientX > this.dPadCenter.x) {
         this.addKey(currentKeys, RIGHT)
       }
+    })
+
+    this.$refs.buttonA.addEventListener('touchstart', () => {
+      this.actionA()
     })
   },
   data() {
