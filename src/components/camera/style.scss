@@ -42,11 +42,12 @@ $pixel_width: 10px;
 
   .collectable {
     position: absolute;
-    background: red;
-    bottom: calc(50% - #{$pixel_width * 7});
+    bottom: calc(50% - #{$pixel_width * 7.5});
     left: calc(50% + #{$pixel_width * 0.6});
-    width: $pixel_width;
-    height: $pixel_width;
     z-index: 9999;
+
+    img {
+      width: 100%;
+    }
   }
 }

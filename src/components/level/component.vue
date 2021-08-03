@@ -14,9 +14,7 @@
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
       <Character :character="character" :style="characterStyle" />
-      <div v-for="collectable in collectables" :key="collectable.id" class="collectable" :style="collectableStyle(collectable)">
-        {{collectable.name}}
-      </div>
+      <Collectable v-for="collectable in collectables" :key="collectable.id" :collectable="collectable" />
     </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
@@ -25,6 +23,7 @@
 <script>
 import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
+import Collectable from '@/components/collectable/component.vue'
 import Camera from '@/components/camera/component.vue'
 
 const PIXEL_SIZE = 10
@@ -34,7 +33,8 @@ export default {
   components: {
     Camera,
     Character,
-    Controller
+    Controller,
+    Collectable
   },
   data () {
     return {
@@ -135,18 +135,6 @@ export default {
           new this.character.collectable(coordinates)
         )
       })
-    },
-
-    collectableStyle(collectable) {
-      let style = ''
-
-      if (collectable.hide) {
-        style += 'display: none;'
-      } else {
-        style += `margin-left: ${PIXEL_SIZE * collectable.coordinates[0]}px; margin-bottom: ${PIXEL_SIZE * collectable.coordinates[1]}px;`
-      }
-
-      return style
     },
 
     collide(newCharacterPosition) {
