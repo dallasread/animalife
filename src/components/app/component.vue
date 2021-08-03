@@ -44,6 +44,9 @@ export default {
           [200, 0],
           [260, 0]
         ],
+        boosters: [
+          [50, 0]
+        ],
         background: {
           image: Sky,
           width: 1

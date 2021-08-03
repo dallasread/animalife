@@ -15,6 +15,7 @@
       <div class="foreground" :style="foregroundStyle"></div>
       <Character :character="character" :style="characterStyle" />
       <Collectable v-for="collectable in collectables" :key="collectable.id" :collectable="collectable" />
+      <Collectable v-for="booster in boosters" :key="booster.id" :collectable="booster" />
     </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
@@ -45,11 +46,13 @@ export default {
       reverseCharacter: false,
       isInitialized: false,
       collectableCount: 0,
-      collectables: []
+      collectables: [],
+      boosters: []
     }
   },
   mounted() {
     this.addCollectables()
+    this.addBoosters()
   },
   computed: {
     characterStyle() {
@@ -121,6 +124,16 @@ export default {
       collectable.hide = true
     },
 
+    boost(booster) {
+      booster.hide = true
+
+      this.character.changeSpeed(+1)
+
+      setTimeout(() => {
+        this.character.changeSpeed(-1)
+      }, 5000)
+    },
+
     controllerInitialized() {
       this.isInitialized = true
     },
@@ -137,24 +150,38 @@ export default {
       })
     },
 
+    addBoosters () {
+      this.level.boosters.forEach((coordinates) => {
+        this.boosters.push(
+          new this.character.booster(coordinates)
+        )
+      })
+    },
+
     collide(newCharacterPosition) {
-      const collectable = this.getCollectable(newCharacterPosition)
+      const collectable = this.findBoundary(this.collectables, newCharacterPosition)
 
       if (collectable) {
-        this.collect(collectable)
+        return this.collect(collectable)
+      }
+
+      const booster = this.findBoundary(this.boosters, newCharacterPosition)
+
+      if (booster) {
+        return this.boost(booster)
       }
     },
 
-    getCollectable(position) {
+    findBoundary(collection, position) {
       const characterStart = position.x - (this.character.width / 2)
       const characterFinish = position.x + (this.character.width / 2)
 
-      return this.collectables.filter((collectable) => !collectable.hide).find((collectable) => {
-        const collectableX = collectable.coordinates[0]
-        const collectableY = collectable.coordinates[1]
-        return collectableX > characterStart + (this.character.width / 2)
-          && collectableX <= characterFinish + (this.character.width / 2)
-          && collectableY === position.y
+      return collection.filter((item) => !item.hide).find((item) => {
+        const itemX = item.coordinates[0]
+        const itemY = item.coordinates[1]
+        return itemX > characterStart + (this.character.width / 2)
+          && itemX <= characterFinish + (this.character.width / 2)
+          && itemY === position.y
       })
     }
   }
