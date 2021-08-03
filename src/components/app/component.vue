@@ -42,11 +42,18 @@ export default {
           [111, 0],
           [160, 0],
           [200, 0],
-          [260, 0]
+          [260, 0],
+          [300, 0],
+          [340, 0],
         ],
         boosters: [
-          [50, 0]
+          [50, 0],
+          [350, 0],
         ],
+        villains: [{
+          type: 'Snail',
+          coordinates: [96, 0]
+        }],
         background: {
           image: Sky,
           width: 1

@@ -16,6 +16,7 @@
       <Character :character="character" :style="characterStyle" />
       <Collectable v-for="collectable in collectables" :key="collectable.id" :collectable="collectable" />
       <Collectable v-for="booster in boosters" :key="booster.id" :collectable="booster" />
+      <Collectable v-for="villain in villains" :key="villain.id" :collectable="villain" />
     </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
@@ -26,6 +27,7 @@ import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
 import Collectable from '@/components/collectable/component.vue'
 import Camera from '@/components/camera/component.vue'
+import VILLAINS from '@/components/app/villains.js'
 
 const PIXEL_SIZE = 10
 
@@ -47,12 +49,14 @@ export default {
       isInitialized: false,
       collectableCount: 0,
       collectables: [],
-      boosters: []
+      boosters: [],
+      villains: []
     }
   },
   mounted() {
     this.addCollectables()
     this.addBoosters()
+    this.addVillains()
   },
   computed: {
     characterStyle() {
@@ -111,12 +115,12 @@ export default {
     },
 
     actionA() {
-      this.characterPosition.y += 2
-      setTimeout(() => this.characterPosition.y += 2, 30)
-      setTimeout(() => this.characterPosition.y += 2, 60)
-      setTimeout(() => this.characterPosition.y -= 2, 150)
-      setTimeout(() => this.characterPosition.y -= 2, 180)
-      setTimeout(() => this.characterPosition.y -= 2, 210)
+      this.characterPosition.y += 3
+      setTimeout(() => this.characterPosition.y += 3, 30)
+      setTimeout(() => this.characterPosition.y += 3, 60)
+      setTimeout(() => this.characterPosition.y -= 3, 150)
+      setTimeout(() => this.characterPosition.y -= 3, 180)
+      setTimeout(() => this.characterPosition.y -= 3, 210)
     },
 
     collect(collectable) {
@@ -154,6 +158,14 @@ export default {
       this.level.boosters.forEach((coordinates) => {
         this.boosters.push(
           new this.character.booster(coordinates)
+        )
+      })
+    },
+
+    addVillains () {
+      this.level.villains.forEach((villain) => {
+        this.villains.push(
+          new VILLAINS[villain.type](villain.coordinates)
         )
       })
     },

@@ -31,6 +31,7 @@ $pixel_width: 10px;
   }
 
   .character {
+    z-index: 999999;
     position: absolute;
     bottom: calc(50% - #{$pixel_width * 7.22});
     left: calc(50% + #{$pixel_width * 0.6});
