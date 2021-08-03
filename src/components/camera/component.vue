@@ -7,7 +7,7 @@
 </template>
 
 <script>
-const PIXEL_SIZE = 14
+const PIXEL_SIZE = 10
 
 export default {
   props: ['characterPosition', 'character'],

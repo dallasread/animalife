@@ -12,7 +12,7 @@ const isKeyActive = (keys, key) => {
   return keys.indexOf(key) !== -1
 }
 
-const PIXEL_SIZE = 14
+const PIXEL_SIZE = 10
 const UP = 38
 const DOWN = 40
 const LEFT = 37

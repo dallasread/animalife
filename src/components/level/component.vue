@@ -27,7 +27,7 @@ import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
 import Camera from '@/components/camera/component.vue'
 
-const PIXEL_SIZE = 14
+const PIXEL_SIZE = 10
 
 export default {
   props: ['character', 'level', 'reset'],
