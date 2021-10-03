@@ -9,7 +9,12 @@
       </div>
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
-    <p class="collectable-count">{{pluralize(collectableCount, this.character.collectable.singular, this.character.collectable.plural)}}</p>
+    <ul class="hearts">
+      <li v-for="(heart, index) in hearts" :key="'heart-' + index">
+        <img src="@/assets/interface/heart.svg">
+      </li>
+    </ul>
+    <p class="collectable-count">{{pluralize(collectableCount, character.collectable.singular, character.collectable.plural)}}</p>
     <Camera :characterPosition="characterPosition" :character="character">
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
@@ -50,7 +55,8 @@ export default {
       collectableCount: 0,
       collectables: [],
       boosters: [],
-      villains: []
+      villains: [],
+      hearts: [true, true, true]
     }
   },
   mounted() {

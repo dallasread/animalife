@@ -40,4 +40,20 @@ $pixel_width: 10px;
     z-index: 999;
     text-decoration: none;
   }
+
+  .hearts {
+    position: absolute;
+    top: $pixel_width * 1.32;
+    left: $pixel_width * 8;
+    z-index: 999;
+
+    li {
+      display: inline;
+      margin-right: $pixel_width;
+
+      img {
+        width: $pixel_width * 5;
+      }
+    }
+  }
 }
