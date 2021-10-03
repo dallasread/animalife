@@ -42,7 +42,7 @@ class Snail extends Villain {
     let direction = -1
     let delta = 1
 
-    setInterval(() => { direction *= -1 }, this.speed * framesInDirection)
+    setInterval(() => { direction *= -1 }, (this.speed * framesInDirection) - 2)
     setInterval(() => this.walk(delta * direction), this.speed)
   }
 }

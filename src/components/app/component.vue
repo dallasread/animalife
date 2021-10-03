@@ -8,7 +8,7 @@
     />
     <ul v-else class="characters">
       <li v-for="c in characters" :key="c.name">
-        <a href="javascript:;" @click.prevent="character = c">
+        <a href="javascript:;" @click.prevent="chooseCharacter(c)">
           <img :src="c.image"/>
           <p>{{c.name}}</p>
         </a>
@@ -36,6 +36,10 @@ export default {
   methods: {
     reset () {
       this.character = null
+    },
+
+    chooseCharacter(character) {
+      this.character = Object.assign({}, character)
     }
   }
 }
