@@ -10,7 +10,7 @@
       <p class="name">Welcome to {{level.name}}!</p>
     </div>
     <ul class="hearts">
-      <li v-for="(heart, index) in hearts" :key="'heart-' + index">
+      <li v-for="index in character.hearts" :key="'heart-' + index">
         <img src="@/assets/interface/heart.svg">
       </li>
     </ul>
@@ -19,9 +19,7 @@
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
       <Character :character="character" :style="characterStyle" />
-      <Collectable v-for="collectable in collectables" :key="collectable.id" :collectable="collectable" />
-      <Collectable v-for="booster in boosters" :key="booster.id" :collectable="booster" />
-      <Collectable v-for="villain in villains" :key="villain.id" :collectable="villain" />
+      <Item v-for="item in items" :key="item.id" :item="item" />
     </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
@@ -30,9 +28,8 @@
 <script>
 import Controller from '@/components/controller/component.vue'
 import Character from '@/components/character/component.vue'
-import Collectable from '@/components/collectable/component.vue'
+import Item from '@/components/item/component.vue'
 import Camera from '@/components/camera/component.vue'
-import VILLAINS from '@/components/app/villains.js'
 
 const PIXEL_SIZE = 10
 
@@ -42,7 +39,7 @@ export default {
     Camera,
     Character,
     Controller,
-    Collectable
+    Item
   },
   data () {
     return {
@@ -53,16 +50,11 @@ export default {
       reverseCharacter: false,
       isInitialized: false,
       collectableCount: 0,
-      collectables: [],
-      boosters: [],
-      villains: [],
-      hearts: [true, true, true]
+      items: []
     }
   },
   mounted() {
-    this.addCollectables()
-    this.addBoosters()
-    this.addVillains()
+    this.addItems()
   },
   computed: {
     characterStyle() {
@@ -144,6 +136,13 @@ export default {
       }, 5000)
     },
 
+    takeDamage() {
+      if (this.character.takeDamage() === 0) {
+        alert('Game Over')
+        this.reset()
+      }
+    },
+
     controllerInitialized() {
       this.isInitialized = true
     },
@@ -152,41 +151,19 @@ export default {
       return `${count} ${count === 1 ? singular : plural}`
     },
 
-    addCollectables () {
-      this.level.collectables.forEach((coordinates) => {
-        this.collectables.push(
-          new this.character.collectable(coordinates)
-        )
-      })
-    },
-
-    addBoosters () {
-      this.level.boosters.forEach((coordinates) => {
-        this.boosters.push(
-          new this.character.booster(coordinates)
-        )
-      })
-    },
-
-    addVillains () {
-      this.level.villains.forEach((villain) => {
-        this.villains.push(
-          new VILLAINS[villain.type](villain.coordinates)
+    addItems () {
+      this.level.items.forEach((item) => {
+        this.items.push(
+          new this.character[item.type](item.coordinates)
         )
       })
     },
 
     collide(newCharacterPosition) {
-      const collectable = this.findBoundary(this.collectables, newCharacterPosition)
+      const item = this.findBoundary(this.items, newCharacterPosition)
 
-      if (collectable) {
-        return this.collect(collectable)
-      }
-
-      const booster = this.findBoundary(this.boosters, newCharacterPosition)
-
-      if (booster) {
-        return this.boost(booster)
+      if (item) {
+        return this[item.constructor.ACTION](item)
       }
     },
 

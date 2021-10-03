@@ -1,0 +1,9 @@
+.item {
+  &.collectable, &.booster {
+    z-index: 777;
+  }
+
+  &.villain {
+    z-index: 888;
+  }
+}

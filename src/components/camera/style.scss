@@ -41,11 +41,10 @@ $pixel_width: 10px;
     }
   }
 
-  .collectable {
+  .item {
     position: absolute;
     bottom: calc(50% - #{$pixel_width * 7.6});
     left: calc(50% + #{$pixel_width * 0.6});
-    z-index: 9999;
 
     img {
       width: 100%;

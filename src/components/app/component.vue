@@ -19,9 +19,8 @@
 
 <script>
 import CHARACTERS from '@/components/app/characters.js'
+import GARDENS from '@/components/level/gardens.js'
 import Level from '@/components/level/component.vue'
-import Grass from '@/assets/levels/gardens/grass.svg'
-import Sky from '@/assets/levels/gardens/sky.svg'
 
 export default {
   components: {
@@ -29,36 +28,7 @@ export default {
   },
   data () {
     return {
-      level: {
-        name: 'Gardens',
-        foreground: {
-          image: Grass,
-          width: 5
-        },
-        collectables: [
-          [-25, 0],
-          [25, 0],
-          [75, 0],
-          [111, 0],
-          [160, 0],
-          [200, 0],
-          [260, 0],
-          [300, 0],
-          [340, 0],
-        ],
-        boosters: [
-          [50, 0],
-          [350, 0],
-        ],
-        villains: [{
-          type: 'Snail',
-          coordinates: [96, 0]
-        }],
-        background: {
-          image: Sky,
-          width: 1
-        }
-      },
+      level: GARDENS,
       characters: CHARACTERS,
       character: null
     }
