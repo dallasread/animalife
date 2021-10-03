@@ -25,7 +25,7 @@ export default {
         style += `margin-bottom: ${marginBottom}px;`
         style += `margin-left: ${PIXEL_SIZE * this.item.coordinates[0]}px;`
 
-        if (!this.item.reverse) {
+        if (this.item.reverse) {
           style += 'transform: scaleX(-1);'
         }
 

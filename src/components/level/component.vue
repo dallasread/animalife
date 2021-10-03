@@ -71,19 +71,16 @@ export default {
   },
   methods: {
     updateX(deltaX) {
-      this.character.walk(deltaX)
+      const newCharacterCoordinates = this.character.calculateMove(deltaX)
+      const collision = this.collide(newCharacterCoordinates)
 
-//       const collision = this.collide([newCharacterX, this.character.coordinates[1]])
-//
-//       if (collision === false) return
+      if (collision === false) return
 
-      // console.log(this.character.coordinates)
-      // this.character.setCoordinates(undefined, newCharacterX)
-      // console.log(this.character.coordinates)
+      this.character.move(deltaX)
 
-      // if (typeof collision === 'function') {
-      //   collision()
-      // }
+      if (typeof collision === 'function') {
+        collision()
+      }
     },
 
     updateY() {
@@ -147,14 +144,14 @@ export default {
     },
 
     findBoundary(collection, coordinates) {
-      const characterStart = coordinates[0] - (this.character.width / 2)
-      const characterFinish = coordinates[0] + (this.character.width / 2)
+      const characterStart = coordinates[0] - (this.character.constructor.width / 2)
+      const characterFinish = coordinates[0] + (this.character.constructor.width / 2)
 
       return collection.filter((item) => !item.hide).find((item) => {
         const itemX = item.coordinates[0]
         const itemY = item.coordinates[1]
-        return itemX > characterStart + (this.character.width / 2)
-          && itemX <= characterFinish + (this.character.width / 2)
+        return itemX > characterStart + (this.character.constructor.width / 2)
+          && itemX <= characterFinish + (this.character.constructor.width / 2)
           && itemY === coordinates[1]
       })
     }

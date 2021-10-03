@@ -13,8 +13,9 @@ export default {
   props: ['character'],
   computed: {
     cameraStyle() {
-      const characterOffset = this.character.width / 2 * PIXEL_SIZE
+      const characterOffset = this.character.constructor.width / 2 * PIXEL_SIZE
       const characterPositionOffset = PIXEL_SIZE * this.character.coordinates[0]
+
       let style = ''
 
       style += `margin-left: calc(50% - ${characterOffset + characterPositionOffset}px);`

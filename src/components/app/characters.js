@@ -73,18 +73,18 @@ class Character {
     this.reverse = false
   }
 
-  walk(delta) {
-    this.coordinates[0] += delta * this.speed
+  calculateMove(deltaX) {
+    return [this.coordinates[0] + (deltaX * this.speed), this.coordinates[1]]
+  }
 
-    if (delta > 0) {
+  move(deltaX) {
+    this.coordinates[0] = this.calculateMove(deltaX)[0]
+
+    if (deltaX < 0) {
       this.reverse = true
     } else {
       this.reverse = false
     }
-  }
-
-  changeSpeed(speed) {
-    this.speed += speed
   }
 
   takeDamage() {
@@ -105,11 +105,11 @@ class Character {
   addBooster(booster) {
     booster.hide = true
 
-    this.changeSpeed(+1)
+    this.speed += 1
     this.hearts += 1
 
     setTimeout(() => {
-      this.changeSpeed(-1)
+      this.speed -= 1
     }, 5000)
   }
 
@@ -217,10 +217,10 @@ class Snail extends Villain {
     const updateInterval = REFRESH_RATE / this.speed
 
     let direction = -1
-    let delta = 1
+    let deltaX = 1
 
     setInterval(() => { direction *= -1 }, (updateInterval * framesInDirection) - 1)
-    setInterval(() => this.walk(delta * direction), updateInterval)
+    setInterval(() => this.move(deltaX * direction), updateInterval)
   }
 }
 Snail.image = SnailImage
