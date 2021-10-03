@@ -1,6 +1,6 @@
 <template>
   <div class="level">
-    <a v-if="isInitialized" href="javascript:;" @click="reset" class="reset">
+    <a v-if="isInitialized" href="javascript:window.location.reload();" class="reset">
       &laquo;
     </a>
     <div v-else>
