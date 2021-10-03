@@ -18,6 +18,7 @@ const DOWN = 40
 const LEFT = 37
 const RIGHT = 39
 const SPACE = 32
+const REFRESH_RATE = 50
 
 export default {
   props: ['updateX', 'updateY', 'actionA', 'initialized'],
@@ -118,7 +119,7 @@ export default {
           this.removeKey(currentKeys, SPACE)
           this.actionA()
         }
-      }, 50)
+      }, REFRESH_RATE)
     },
 
     stop() {

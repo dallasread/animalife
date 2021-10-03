@@ -15,10 +15,10 @@
       </li>
     </ul>
     <p class="collectable-count">{{pluralize(collectableCount, character.collectable.singular, character.collectable.plural)}}</p>
-    <Camera :characterPosition="characterPosition" :character="character">
+    <Camera :character="character">
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
-      <Character :character="character" :style="characterStyle" />
+      <Item :item="character" />
       <Item v-for="item in items" :key="item.id" :item="item" />
     </Camera>
     <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
@@ -27,7 +27,6 @@
 
 <script>
 import Controller from '@/components/controller/component.vue'
-import Character from '@/components/character/component.vue'
 import Item from '@/components/item/component.vue'
 import Camera from '@/components/camera/component.vue'
 
@@ -37,16 +36,11 @@ export default {
   props: ['character', 'level', 'reset'],
   components: {
     Camera,
-    Character,
     Controller,
     Item
   },
   data () {
     return {
-      characterPosition: {
-        x: 2,
-        y: 0
-      },
       reverseCharacter: false,
       isInitialized: false,
       collectableCount: 0,
@@ -57,23 +51,6 @@ export default {
     this.addItems()
   },
   computed: {
-    characterStyle() {
-      let style = `width: ${this.character.width * PIXEL_SIZE}px;`
-
-      style += `margin-left: ${this.characterPosition.x * PIXEL_SIZE}px;`
-      style += `margin-bottom: ${PIXEL_SIZE * (this.character.yOffset + this.characterPosition.y)}px;`
-
-      if (this.reverseCharacter) {
-        style += 'transform: scaleX(-1);'
-      }
-
-      if (this.character.takingDamage) {
-        style += 'opacity: 0.4'
-      }
-
-      return style;
-    },
-
     backgroundStyle () {
       let style = `background-image: url(${this.level.background.image});`
 
@@ -94,35 +71,37 @@ export default {
   },
   methods: {
     updateX(deltaX) {
-      const newCharacterPosition = this.characterPosition.x + (deltaX * this.character.speed)
-      const collision = this.collide({ x: newCharacterPosition, y: this.characterPosition.y })
+      this.character.walk(deltaX)
 
-      this.reverseCharacter = deltaX < 0
+//       const collision = this.collide([newCharacterX, this.character.coordinates[1]])
+//
+//       if (collision === false) return
 
-      if (collision === false) return
+      // console.log(this.character.coordinates)
+      // this.character.setCoordinates(undefined, newCharacterX)
+      // console.log(this.character.coordinates)
 
-      this.characterPosition.x = newCharacterPosition
-
-      if (typeof collision === 'function') {
-        collision()
-      }
+      // if (typeof collision === 'function') {
+      //   collision()
+      // }
     },
 
     updateY() {
-      // const newPosition = this.characterPosition.y + deltaY
+      // const newPosition = this.character.position[1] + deltaY
 
       // if (newPosition <= 0) {
-      //   this.characterPosition.y = newPosition
+      //   this.character.position[1] = newPosition
       // }
     },
 
     actionA() {
-      this.characterPosition.y += 3
-      setTimeout(() => this.characterPosition.y += 3, 30)
-      setTimeout(() => this.characterPosition.y += 3, 60)
-      setTimeout(() => this.characterPosition.y -= 3, 150)
-      setTimeout(() => this.characterPosition.y -= 3, 180)
-      setTimeout(() => this.characterPosition.y -= 3, 210)
+      this.character.setCoordinates(undefined, this.character.coordinates[1] + 3)
+
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), 30)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), 60)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 150)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 180)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 210)
     },
 
     collect(collectable) {
@@ -131,17 +110,11 @@ export default {
     },
 
     boost(booster) {
-      booster.hide = true
-
-      this.character.changeSpeed(+1)
-
-      setTimeout(() => {
-        this.character.changeSpeed(-1)
-      }, 5000)
+      this.character.addBooster(booster)
     },
 
-    takeDamage() {
-      if (this.character.takeDamage() === 0) {
+    takeDamage(villain) {
+      if (this.character.takeDamage(villain) === 0) {
         alert('Game Over')
         this.reset()
       }
@@ -156,6 +129,8 @@ export default {
     },
 
     addItems () {
+      this.character.setCoordinates(5, 0)
+
       this.level.items.forEach((item) => {
         this.items.push(
           new this.character[item.type](item.coordinates)
@@ -163,24 +138,24 @@ export default {
       })
     },
 
-    collide(newCharacterPosition) {
-      const item = this.findBoundary(this.items, newCharacterPosition)
+    collide(coordinates) {
+      const item = this.findBoundary(this.items, coordinates)
 
       if (item) {
         return this[item.constructor.ACTION](item)
       }
     },
 
-    findBoundary(collection, position) {
-      const characterStart = position.x - (this.character.width / 2)
-      const characterFinish = position.x + (this.character.width / 2)
+    findBoundary(collection, coordinates) {
+      const characterStart = coordinates[0] - (this.character.width / 2)
+      const characterFinish = coordinates[0] + (this.character.width / 2)
 
       return collection.filter((item) => !item.hide).find((item) => {
         const itemX = item.coordinates[0]
         const itemY = item.coordinates[1]
         return itemX > characterStart + (this.character.width / 2)
           && itemX <= characterFinish + (this.character.width / 2)
-          && itemY === position.y
+          && itemY === coordinates[1]
       })
     }
   }

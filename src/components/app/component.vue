@@ -7,10 +7,10 @@
       :reset="reset"
     />
     <ul v-else class="characters">
-      <li v-for="c in characters" :key="c.name">
+      <li v-for="c in characterClasses" :key="c.firstName">
         <a href="javascript:;" @click.prevent="chooseCharacter(c)">
-          <img :src="c.image"/>
-          <p>{{c.name}}</p>
+          <img :src="c.constructor.image"/>
+          <p>{{c.firstName}}</p>
         </a>
       </li>
     </ul>
@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       level: GARDENS,
-      characters: CHARACTERS,
+      characterClasses: CHARACTERS,
       character: null
     }
   },
@@ -38,8 +38,8 @@ export default {
       this.character = null
     },
 
-    chooseCharacter(character) {
-      this.character = Object.assign({}, character)
+    chooseCharacter(characterClasses) {
+      this.character = new characterClasses.constructor([0, 0])
     }
   }
 }

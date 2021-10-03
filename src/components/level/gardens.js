@@ -47,5 +47,20 @@ export default {
   }, {
     type: 'collectable',
     coordinates: [340, 0],
+  }, {
+    type: 'collectable',
+    coordinates: [400, 0],
+  }, {
+    type: 'collectable',
+    coordinates: [430, 0],
+  }, {
+    type: 'collectable',
+    coordinates: [445, 0],
+  }, {
+    type: 'booster',
+    coordinates: [480, 0],
+  }, {
+    type: 'collectable',
+    coordinates: [510, 0],
   }]
 }

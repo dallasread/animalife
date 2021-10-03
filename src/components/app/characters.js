@@ -1,7 +1,7 @@
-import Chihuahua from '@/assets/characters/chihuahua.svg'
-import Doggie from '@/assets/characters/doggie.svg'
-import Kitty from '@/assets/characters/kitty.svg'
-import Turtley from '@/assets/characters/turtley.svg'
+import ChihuahuaImage from '@/assets/characters/chihuahua.svg'
+import DoggieImage from '@/assets/characters/doggie.svg'
+import KittyImage from '@/assets/characters/kitty.svg'
+import TurtleyImage from '@/assets/characters/turtley.svg'
 import BoneImage from '@/assets/collectables/bone.svg'
 import SeaweedImage from '@/assets/collectables/seaweed.svg'
 import FishImage from '@/assets/collectables/fish.svg'
@@ -9,45 +9,6 @@ import RainbowBoneImage from '@/assets/collectables/rainbow-bone.svg'
 import RainbowSeaweedImage from '@/assets/collectables/rainbow-seaweed.svg'
 import RainbowFishImage from '@/assets/collectables/rainbow-fish.svg'
 import SnailImage from '@/assets/characters/snail.svg'
-
-class Villain {
-  constructor(coordinates) {
-    this.id = Math.random()
-    this.coordinates = coordinates
-    this.reverse = false
-  }
-
-  walk(delta) {
-    this.coordinates[0] += delta
-
-    if (delta > 0) {
-      this.reverse = true
-    } else {
-      this.reverse = false
-    }
-  }
-}
-
-Villain.TYPE = 'villain'
-Villain.ACTION = 'takeDamage'
-
-class Snail extends Villain {
-  constructor(coordinates) {
-    super(coordinates)
-    this.speed = 125
-    this.startWalking(30)
-  }
-
-  startWalking (framesInDirection) {
-    let direction = -1
-    let delta = 1
-
-    setInterval(() => { direction *= -1 }, (this.speed * framesInDirection) - 2)
-    setInterval(() => this.walk(delta * direction), this.speed)
-  }
-}
-Snail.image = SnailImage
-Snail.width = 8
 
 class Collectable {
   constructor(coordinates) {
@@ -105,71 +66,169 @@ RainbowSeaweed.singular = 'Rainbow Seaweed'
 RainbowSeaweed.image = RainbowSeaweedImage
 RainbowSeaweed.width = 3
 
-const changeSpeed = function (speed) {
-  this.speed += speed
-}
-
-const takeDamage = function () {
-  if (this.takingDamage) {
-    return
+class Character {
+  constructor(coordinates) {
+    this.id = Math.random()
+    this.coordinates = coordinates
+    this.reverse = false
   }
 
-  this.takingDamage = true
-  this.hearts -= 1
+  walk(delta) {
+    this.coordinates[0] += delta * this.speed
 
-  setTimeout(() => {
-    this.takingDamage = false
-  }, 2500)
+    if (delta > 0) {
+      this.reverse = true
+    } else {
+      this.reverse = false
+    }
+  }
 
-  return this.hearts
+  changeSpeed(speed) {
+    this.speed += speed
+  }
+
+  takeDamage() {
+    if (this.takingDamage) {
+      return
+    }
+
+    this.takingDamage = true
+    this.hearts -= 1
+
+    setTimeout(() => {
+      this.takingDamage = false
+    }, 2500)
+
+    return this.hearts
+  }
+
+  addBooster(booster) {
+    booster.hide = true
+
+    this.changeSpeed(+1)
+    this.hearts += 1
+
+    setTimeout(() => {
+      this.changeSpeed(-1)
+    }, 5000)
+  }
+
+  setCoordinates(x, y) {
+    if (typeof x !== 'undefined') {
+      this.coordinates[0] = x
+    }
+
+    if (typeof y !== 'undefined') {
+      this.coordinates[1] = y
+    }
+  }
 }
 
-export default [{
-    name: 'Chihui',
-    image: Chihuahua,
-    width: 10,
-    yOffset: -1,
-    collectable: Bone,
-    booster: RainbowBone,
-    villain: Snail,
-    speed: 3,
-    hearts: 3,
-    changeSpeed,
-    takeDamage
-  }, {
-    name: 'Doggie',
-    image: Doggie,
-    width: 20,
-    yOffset: -1,
-    collectable: Bone,
-    booster: RainbowBone,
-    villain: Snail,
-    speed: 2,
-    hearts: 3,
-    changeSpeed,
-    takeDamage
-  }, {
-    name: 'Kitty',
-    image: Kitty,
-    width: 17,
-    yOffset: -1,
-    collectable: Fish,
-    booster: RainbowFish,
-    villain: Snail,
-    speed: 2,
-    hearts: 3,
-    changeSpeed,
-    takeDamage
-  }, {
-    name: 'Turtley',
-    image: Turtley,
-    width: 6,
-    yOffset: 0,
-    collectable: Seaweed,
-    booster: RainbowSeaweed,
-    villain: Snail,
-    speed: 1,
-    hearts: 3,
-    changeSpeed,
-    takeDamage
-}]
+Character.TYPE = 'character'
+Character.ACTION = ''
+
+class Chihui extends Character {
+  constructor(coordinates) {
+    super(coordinates)
+
+    this.firstName = 'Chihui'
+    this.collectable = Bone
+    this.booster = RainbowBone
+    this.villain = Snail
+    this.speed = 3
+    this.hearts = 3
+  }
+}
+
+Chihui.image = ChihuahuaImage
+Chihui.width = 10
+Chihui.yOffset = -1
+
+class Doggie extends Character {
+  constructor(coordinates) {
+    super(coordinates)
+
+    this.firstName = 'Doggie'
+    this.collectable = Bone
+    this.booster = RainbowBone
+    this.villain = Snail
+    this.speed = 2
+    this.hearts = 3
+  }
+}
+
+Doggie.image = DoggieImage
+Doggie.width = 20
+Doggie.yOffset = -1
+
+class Kitty extends Character {
+  constructor(coordinates) {
+    super(coordinates)
+
+    this.firstName = 'Kitty'
+    this.collectable = Fish
+    this.booster = RainbowFish
+    this.villain = Snail
+    this.speed = 2
+    this.hearts = 3
+  }
+}
+
+Kitty.image = KittyImage
+Kitty.width = 17
+Kitty.yOffset = -1
+
+class Turtley extends Character {
+  constructor(coordinates) {
+    super(coordinates)
+
+    this.firstName = 'Turtley'
+    this.collectable = Seaweed
+    this.booster = RainbowSeaweed
+    this.villain = Snail
+    this.speed = 1
+    this.hearts = 3
+  }
+}
+
+Turtley.image = TurtleyImage
+Turtley.width = 6
+Turtley.yOffset = 0
+
+class Villain extends Character {
+  constructor(coordinates) {
+    super(coordinates)
+  }
+}
+
+Villain.TYPE = 'villain'
+Villain.ACTION = 'takeDamage'
+
+const REFRESH_RATE = 50
+
+class Snail extends Villain {
+  constructor(coordinates) {
+    super(coordinates)
+    this.speed = 0.75
+    this.pace(30)
+  }
+
+  pace (framesInDirection) {
+    const updateInterval = REFRESH_RATE / this.speed
+
+    let direction = -1
+    let delta = 1
+
+    setInterval(() => { direction *= -1 }, (updateInterval * framesInDirection) - 1)
+    setInterval(() => this.walk(delta * direction), updateInterval)
+  }
+}
+Snail.image = SnailImage
+Snail.width = 8
+
+export default [
+  new Chihui([0, 0]),
+  new Doggie([0, 0]),
+  new Kitty([0, 0]),
+  new Turtley([0, 0])
+]
