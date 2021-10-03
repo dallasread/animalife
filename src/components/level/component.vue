@@ -67,6 +67,10 @@ export default {
         style += 'transform: scaleX(-1);'
       }
 
+      if (this.character.takingDamage) {
+        style += 'opacity: 0.4'
+      }
+
       return style;
     },
 
