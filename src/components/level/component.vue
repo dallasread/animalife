@@ -49,6 +49,7 @@ const COLLISION_MAP = {
 }
 
 const PIXEL_SIZE = 10
+const REFRESH_RATE = 50
 
 export default {
   props: ['character', 'level', 'reset'],
@@ -122,11 +123,11 @@ export default {
     actionA() {
       this.character.setCoordinates(undefined, this.character.coordinates[1] + 3)
 
-      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), 30)
-      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), 60)
-      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 150)
-      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 180)
-      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), 210)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), REFRESH_RATE / 2)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] + 3), REFRESH_RATE)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), REFRESH_RATE * 5)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), REFRESH_RATE * 6)
+      setTimeout(() => this.character.setCoordinates(undefined, this.character.coordinates[1] - 3), REFRESH_RATE * 7)
     },
 
     collect(collectable) {
@@ -172,19 +173,21 @@ export default {
     },
 
     findBoundary(collection, nextFrame) {
-      const nextFrameStart = nextFrame.coordinates[0] - (nextFrame.constructor.width / 2)
-      const nextFrameFinish = nextFrame.coordinates[0] + (nextFrame.constructor.width / 2)
+      const nextFrameXStart = nextFrame.coordinates[0]
+      const nextFrameXFinish = nextFrame.coordinates[0] + nextFrame.constructor.width
 
       return collection
         .filter((item) => item.id !== nextFrame.id)
         .filter((item) => !item.hide)
         .find((item) => {
-          const itemX = item.coordinates[0]
+          const itemXStart = item.coordinates[0]
+          const itemXFinish = item.coordinates[0] + item.constructor.width
           const itemY = item.coordinates[1]
 
-          return itemX > nextFrameStart - (nextFrame.constructor.width / 2)
-            && itemX <= nextFrameFinish + (nextFrame.constructor.width / 2)
-            && itemY === nextFrame.coordinates[1]
+          return (
+            (nextFrameXFinish >= itemXStart && nextFrameXFinish <= itemXFinish) ||
+            (nextFrameXStart >= itemXStart && nextFrameXStart <= itemXFinish)
+          ) && itemY === nextFrame.coordinates[1]
         })
     }
   }
