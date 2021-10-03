@@ -12,9 +12,6 @@ export default {
     width: 1
   },
   items: [{
-    type: 'villain',
-    coordinates: [96, 0]
-  }, {
     type: 'collectable',
     coordinates: [-25, 0],
   }, {
@@ -27,6 +24,9 @@ export default {
     type: 'collectable',
     coordinates: [75, 0],
   }, {
+    type: 'villain',
+    coordinates: [96, 0]
+  }, {
     type: 'collectable',
     coordinates: [111, 0],
   }, {
@@ -35,6 +35,9 @@ export default {
   }, {
     type: 'collectable',
     coordinates: [200, 0],
+  }, {
+    type: 'villain',
+    coordinates: [230, 0]
   }, {
     type: 'collectable',
     coordinates: [260, 0],

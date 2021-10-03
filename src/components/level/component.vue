@@ -18,10 +18,9 @@
     <Camera :character="character">
       <div class="background" :style="backgroundStyle"></div>
       <div class="foreground" :style="foregroundStyle"></div>
-      <Item :item="character" />
       <Item v-for="item in items" :key="item.id" :item="item" />
     </Camera>
-    <Controller :updateX="updateX" :updateY="updateY" :actionA="actionA" :initialized="controllerInitialized" />
+    <Controller :updateX="updateCharacterX" :updateY="updateCharacterY" :actionA="actionA" :initialized="controllerInitialized" />
   </div>
 </template>
 
@@ -29,6 +28,25 @@
 import Controller from '@/components/controller/component.vue'
 import Item from '@/components/item/component.vue'
 import Camera from '@/components/camera/component.vue'
+
+const COLLISION_MAP = {
+  character: {
+    villain(character, villain) {
+      this.takeDamage(character, villain)
+    },
+    collectable(character, collectable) {
+      this.collect(collectable)
+    },
+    booster(character, booster) {
+      this.boost(character, booster)
+    }
+  },
+  villain: {
+    character(villain, character) {
+      this.takeDamage(character, villain)
+    }
+  },
+}
 
 const PIXEL_SIZE = 10
 
@@ -70,16 +88,26 @@ export default {
     }
   },
   methods: {
-    updateX(deltaX) {
-      const newCharacterCoordinates = this.character.calculateMove(deltaX)
-      const collision = this.collide(newCharacterCoordinates)
+    updateCharacterX(deltaX) {
+      this.updateX(this.character, deltaX)
+    },
 
-      if (collision === false) return
+    updateCharacterY(deltaY) {
+      this.updateY(this.character, deltaY)
+    },
 
-      this.character.move(deltaX)
+    updateX(item, deltaX) {
+      const itemNextFrame = item.nextFrame(deltaX)
+      const collidedItem = this.collide(itemNextFrame)
 
-      if (typeof collision === 'function') {
-        collision()
+      item.move(deltaX)
+
+      if (collidedItem) {
+        const action = COLLISION_MAP[item.constructor.TYPE][collidedItem.constructor.TYPE]
+
+        if (action) {
+          action.call(this, item, collidedItem)
+        }
       }
     },
 
@@ -106,12 +134,12 @@ export default {
       collectable.hide = true
     },
 
-    boost(booster) {
-      this.character.addBooster(booster)
+    boost(item, booster) {
+      item.addBooster(booster)
     },
 
-    takeDamage(villain) {
-      if (this.character.takeDamage(villain) === 0) {
+    takeDamage(item, villain) {
+      if (item.takeDamage(villain) === 0) {
         alert('Game Over')
         this.reset()
       }
@@ -128,32 +156,36 @@ export default {
     addItems () {
       this.character.setCoordinates(5, 0)
 
-      this.level.items.forEach((item) => {
-        this.items.push(
-          new this.character[item.type](item.coordinates)
-        )
+      this.items.push(this.character)
+
+      this.level.items.forEach((builder) => {
+        const item = new this.character[builder.type](builder.coordinates)
+
+        this.items.push(item)
+
+        item.start(this)
       })
     },
 
-    collide(coordinates) {
-      const item = this.findBoundary(this.items, coordinates)
-
-      if (item) {
-        return this[item.constructor.ACTION](item)
-      }
+    collide(nextFrame) {
+      return this.findBoundary(this.items, nextFrame)
     },
 
-    findBoundary(collection, coordinates) {
-      const characterStart = coordinates[0] - (this.character.constructor.width / 2)
-      const characterFinish = coordinates[0] + (this.character.constructor.width / 2)
+    findBoundary(collection, nextFrame) {
+      const nextFrameStart = nextFrame.coordinates[0] - (nextFrame.constructor.width / 2)
+      const nextFrameFinish = nextFrame.coordinates[0] + (nextFrame.constructor.width / 2)
 
-      return collection.filter((item) => !item.hide).find((item) => {
-        const itemX = item.coordinates[0]
-        const itemY = item.coordinates[1]
-        return itemX > characterStart + (this.character.constructor.width / 2)
-          && itemX <= characterFinish + (this.character.constructor.width / 2)
-          && itemY === coordinates[1]
-      })
+      return collection
+        .filter((item) => item.id !== nextFrame.id)
+        .filter((item) => !item.hide)
+        .find((item) => {
+          const itemX = item.coordinates[0]
+          const itemY = item.coordinates[1]
+
+          return itemX > nextFrameStart - (nextFrame.constructor.width / 2)
+            && itemX <= nextFrameFinish + (nextFrame.constructor.width / 2)
+            && itemY === nextFrame.coordinates[1]
+        })
     }
   }
 }

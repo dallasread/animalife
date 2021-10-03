@@ -10,15 +10,20 @@ import RainbowSeaweedImage from '@/assets/collectables/rainbow-seaweed.svg'
 import RainbowFishImage from '@/assets/collectables/rainbow-fish.svg'
 import SnailImage from '@/assets/characters/snail.svg'
 
-class Collectable {
+class Item {
+  start() { }
+}
+
+class Collectable extends Item {
   constructor(coordinates) {
+    super()
+
     this.id = Math.random()
     this.coordinates = coordinates
   }
 }
 
 Collectable.TYPE = 'collectable'
-Collectable.ACTION = 'collect'
 
 class Bone extends Collectable {}
 Bone.plural = 'Bones'
@@ -38,15 +43,16 @@ Seaweed.singular = 'Seaweed'
 Seaweed.image = SeaweedImage
 Seaweed.width = 3
 
-class Booster {
+class Booster extends Item {
   constructor(coordinates) {
+    super()
+
     this.id = Math.random()
     this.coordinates = coordinates
   }
 }
 
 Booster.TYPE = 'booster'
-Booster.ACTION = 'boost'
 
 class RainbowBone extends Booster {}
 RainbowBone.plural = 'Rainbow Bones'
@@ -66,19 +72,25 @@ RainbowSeaweed.singular = 'Rainbow Seaweed'
 RainbowSeaweed.image = RainbowSeaweedImage
 RainbowSeaweed.width = 3
 
-class Character {
+class Character extends Item {
   constructor(coordinates) {
+    super()
+
     this.id = Math.random()
     this.coordinates = coordinates
     this.reverse = false
   }
 
-  calculateMove(deltaX) {
-    return [this.coordinates[0] + (deltaX * this.speed), this.coordinates[1]]
+  nextFrame(deltaX) {
+    const item = new this.constructor([this.coordinates[0] + (deltaX * this.speed), this.coordinates[1]])
+
+    item.id = this.id
+
+    return item
   }
 
   move(deltaX) {
-    this.coordinates[0] = this.calculateMove(deltaX)[0]
+    this.coordinates[0] = this.nextFrame(deltaX).coordinates[0]
 
     if (deltaX < 0) {
       this.reverse = true
@@ -125,7 +137,6 @@ class Character {
 }
 
 Character.TYPE = 'character'
-Character.ACTION = ''
 
 class Chihui extends Character {
   constructor(coordinates) {
@@ -202,27 +213,31 @@ class Villain extends Character {
 }
 
 Villain.TYPE = 'villain'
-Villain.ACTION = 'takeDamage'
 
 const REFRESH_RATE = 50
 
 class Snail extends Villain {
   constructor(coordinates) {
     super(coordinates)
+
     this.speed = 0.75
-    this.pace(30)
   }
 
-  pace (framesInDirection) {
+  start(level) {
+    this.pace(level, 30)
+  }
+
+  pace (level, framesInDirection) {
     const updateInterval = REFRESH_RATE / this.speed
 
     let direction = -1
     let deltaX = 1
 
     setInterval(() => { direction *= -1 }, (updateInterval * framesInDirection) - 1)
-    setInterval(() => this.move(deltaX * direction), updateInterval)
+    setInterval(() => level.updateX(this, deltaX * direction), updateInterval)
   }
 }
+
 Snail.image = SnailImage
 Snail.width = 8
 
